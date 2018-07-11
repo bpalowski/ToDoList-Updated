@@ -49,6 +49,22 @@ namespace ToDoList.Models
         }
         return allItems;
     }
+    public static void DeleteAll()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM items;";
+
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if(conn !=null)
+      {
+        conn.Dispose();
+      }
+    }
     // public void Save()
     // {
     //   _instances.Add(this);
