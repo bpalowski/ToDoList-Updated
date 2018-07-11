@@ -53,14 +53,14 @@ namespace ToDoList.Models
     // {
     //   _instances.Add(this);
     // }
-    public static void ClearAll()
-    {
-      _instances.Clear();
-    }
-    public static Item Find(int searchId)
-    {
-      return _instances[searchId-1];
-    }
+    // public static void ClearAll()
+    // {
+    //   _description.Clear();
+    // }
+    // public static Item Find(int searchId)
+    // {
+    //   return _description[searchId-1];
+    // }
 
   }
 }
