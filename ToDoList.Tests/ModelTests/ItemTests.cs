@@ -11,53 +11,45 @@ namespace ToDoList.Tests
     public void Dispose()
     {
       Item.DeleteAll();
+      Category.DeleteAll();
     }
     public ItemTests()
     {
       DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=todo_test;";
     }
     [TestMethod]
-    public void GetAll_DbStartsEmpty_0()
+    public void Equals_OverrideTrueForSameDescription_Item()
     {
-      //Arrange
-      //Act
-      int result = Item.GetAll().Count;
-      //Assert
-      Assert.AreEqual(0, result);
-    }
-    [TestMethod]
-    public void Equals_ReurnsTrueIfDescriptionsAreTheSame_Item()
-    {
-
       //Arrange, Act
-      Item firstItem = new Item("Mow the lawn");
-      Item secondItem = new Item("Mow the lawn");
+      Item firstItem = new Item("Mow the lawn", 1);
+      Item secondItem = new Item("Mow the lawn", 1);
 
       //Assert
       Assert.AreEqual(firstItem, secondItem);
     }
+
     [TestMethod]
-    public void Save_SavesToDatabase_ItemList()
+    public void Save_SavesItemToDatabase_ItemList()
     {
       //Arrange
-      Item testItem = new Item("Mow the Dog");
+      Item testItem = new Item("Mow the lawn", 1);
+      testItem.Save();
 
       //Act
-      testItem.Save();
       List<Item> result = Item.GetAll();
       List<Item> testList = new List<Item>{testItem};
 
       //Assert
       CollectionAssert.AreEqual(testList, result);
     }
-    [TestMethod]
-    public void Save_AssignsIdToObject_Id()
+   [TestMethod]
+    public void Save_DatabaseAssignsIdToObject_Id()
     {
       //Arrange
-      Item testItem = new Item("Dog the Lawn");
+      Item testItem = new Item("Mow the lawn", 1);
+      testItem.Save();
 
       //Act
-      testItem.Save();
       Item savedItem = Item.GetAll()[0];
 
       int result = savedItem.GetId();
@@ -66,11 +58,12 @@ namespace ToDoList.Tests
       //Assert
       Assert.AreEqual(testId, result);
     }
+
     [TestMethod]
     public void Find_FindsItemInDatabase_Item()
     {
       //Arrange
-      Item testItem = new Item("James probably has parvo idk");
+      Item testItem = new Item("Mow the lawn", 1);
       testItem.Save();
 
       //Act
@@ -78,20 +71,6 @@ namespace ToDoList.Tests
 
       //Assert
       Assert.AreEqual(testItem, foundItem);
-    }
-    [TestMethod]
-    public void Edit_UpdatesItemInDatabase_String()
-    {
-      //Arrange
-      string firstDescription = "Walk the parvo";
-      Item testItem = new Item(firstDescription, 1);
-      testItem.Save();
-      string secondDescription = "Mow the Parvo";
-      //Act
-      testItem.Edit(secondDescription);
-      string result = Item.Find(testItem.GetId()).GetDescription();
-      //Assert
-      Assert.AreEqual(secondDescription, result);
     }
   }
 }
